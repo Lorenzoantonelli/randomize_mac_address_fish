@@ -13,11 +13,18 @@ function randomize_mac_address
     sudo /System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport -z
     
     if [ -z $argv[1] ]
+        set count 0
         while true
             set macaddress (openssl rand -hex 6 | sed 's/\(..\)/\1:/g; s/.$//')
             sudo ifconfig en0 ether $macaddress
             if [ $status -eq 0 ]
                 break
+            else
+                set count (math $count + 1)
+                if [ $count -eq 10 ]
+                    echo "Error: Too many failed attempts to set MAC address"
+                    return 1
+                end
             end
         end
     else
