@@ -11,7 +11,7 @@ The **randomize_mac_address** function is a simple fish shell script that allows
 ```bash
 git clone https://github.com/Lorenzoantonelli/randomize_mac_address_fish.git
 ```
- * Copy the **randomize_mac_address.fish** in fish's functions folder:
+ * Copy **randomize_mac_address.fish** in fish's functions folder:
 ```bash
 cd randomize_mac_address_fish
 cp randomize_mac_address.fish ~/.config/fish/functions/
