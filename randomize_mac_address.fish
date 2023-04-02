@@ -11,6 +11,7 @@ function randomize_mac_address
     end
 
     sudo /System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport -z
+    
     if [ -z $argv[1] ]
         while true
             set macaddress (openssl rand -hex 6 | sed 's/\(..\)/\1:/g; s/.$//')
@@ -21,6 +22,11 @@ function randomize_mac_address
         end
     else
         set macaddress $argv[1]
+        if ! string match -r -q '([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})' $macaddress
+            echo "Error: Invalid MAC address format"
+            return 1
+        end
+
         sudo ifconfig en0 ether $macaddress
         if [ $status -ne 0 ]
             echo "Error: Failed to set MAC address to $macaddress"
