@@ -11,13 +11,23 @@ function randomize_mac_address
     end
 
     sudo /System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport -z
-    while true
-        set macaddress (openssl rand -hex 6 | sed 's/\(..\)/\1:/g; s/.$//')
+    if [ -z $argv[1] ]
+        while true
+            set macaddress (openssl rand -hex 6 | sed 's/\(..\)/\1:/g; s/.$//')
+            sudo ifconfig en0 ether $macaddress
+            if [ $status -eq 0 ]
+                break
+            end
+        end
+    else
+        set macaddress $argv[1]
         sudo ifconfig en0 ether $macaddress
-        if [ $status -eq 0 ]
-            break
+        if [ $status -ne 0 ]
+            echo "Error: Failed to set MAC address to $macaddress"
+            return 1
         end
     end
+
     set -x -g macaddress $macaddress
     echo "Your new MAC address is $macaddress"
     sudo networksetup -setairportpower en0 off
