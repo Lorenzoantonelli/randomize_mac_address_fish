@@ -23,5 +23,12 @@ From fish shell simply run the command:
 randomize_mac_address
 ```
 
+You can also specify a MAC address to use instead of a random one:
+```bash
+randomize_mac_address [macaddress]
+```
+
+
+
 ## How to restore the original MAC address
 If you want to restore your original MAC address after using the randomize_mac_address function, you can simply reboot your device.
