@@ -23,8 +23,12 @@ function randomize_mac_address
     else
         set macaddress $argv[1]
         if ! string match -r -q '([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})' $macaddress
-            echo "Error: Invalid MAC address format"
-            return 1
+            if string match -r -q '([0-9A-Fa-f]{2}){6}' $macaddress
+                set macaddress (echo $macaddress | sed 's/\(..\)/\1:/g; s/.$//')
+            else
+                echo "Error: Invalid MAC address format"
+                return 1
+            end
         end
 
         sudo ifconfig en0 ether $macaddress
@@ -36,6 +40,7 @@ function randomize_mac_address
 
     set -x -g macaddress $macaddress
     echo "Your new MAC address is $macaddress"
+    
     sudo networksetup -setairportpower en0 off
     sudo networksetup -setairportpower en0 on
 end
