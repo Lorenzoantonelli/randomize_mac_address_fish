@@ -10,7 +10,9 @@ function randomize_mac_address
         return 1
     end
 
-    sudo /System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport -z
+    # sudo /System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport -z
+    sudo networksetup -setnetworkserviceenabled Wi-Fi off
+    sudo networksetup -setnetworkserviceenabled Wi-Fi on
     
     if [ -z $argv[1] ]
         set count 0
